@@ -7,8 +7,10 @@
 
 class Engine : WindowContainer
 {
+private:
+	SOCKET* mSocket = nullptr;
 public:
-	bool Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height);
+	bool Initialize(SOCKET* pSocket, HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height);
 	bool ProcessMessages();
 	void Update(float x, float y);
 	void RenderFrame();

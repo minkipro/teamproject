@@ -1,8 +1,9 @@
 #pragma once
 #include "Engine.h"
 
-bool Engine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
+bool Engine::Initialize(SOCKET* pSocket, HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
+	mSocket = pSocket;
 	if (!this->render_window.Initialize(this, hInstance, window_title, window_class, width, height))
 		return false;
 
@@ -38,21 +39,37 @@ void Engine::Update(float x, float y)
 	gfx.objectPosition[1] = y;
 	if (keyboard.KeyIsPressed('W'))
 	{
+		float myValue[2] = { gfx.objectPosition[0],gfx.objectPosition[1]+0.01f };
+		char data[8] = { 0, };
+		memcpy(data, &myValue, 8);
+		send(*mSocket, data, 8, 0);
 		//send data
 		//this->gfx.objectPosition[1] += 0.01f;
 	}
 	if (keyboard.KeyIsPressed('A'))
 	{
+		float myValue[2] = { gfx.objectPosition[0] - 0.01f,gfx.objectPosition[1]};
+		char data[8] = { 0, };
+		memcpy(data, &myValue, 8);
+		send(*mSocket, data, 8, 0);
 		//send data
 		//this->gfx.objectPosition[0] -= 0.01f;
 	}
 	if (keyboard.KeyIsPressed('S'))
 	{
+		float myValue[2] = { gfx.objectPosition[0],gfx.objectPosition[1] - 0.01f };
+		char data[8] = { 0, };
+		memcpy(data, &myValue, 8);
+		send(*mSocket, data, 8, 0);
 		//send data
 		//this->gfx.objectPosition[1] -= 0.01f;
 	}
 	if (keyboard.KeyIsPressed('D'))
 	{
+		float myValue[2] = { gfx.objectPosition[0] + 0.01f,gfx.objectPosition[1]};
+		char data[8] = { 0, };
+		memcpy(data, &myValue, 8);
+		send(*mSocket, data, 8, 0);
 		//send data
 		//this->gfx.objectPosition[0] += 0.01f;
 	}

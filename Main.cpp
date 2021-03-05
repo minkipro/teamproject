@@ -1,17 +1,19 @@
 #include "Engine.h"
+#include <atomic>
 
-bool checkOn = false;
-float position[2] = { 0.0f, };
+std::atomic<float> position[2] = { 0.0f, };
 
-int listenFunction()
+int listenFunction(SOCKET mySocket)
 {
-	/*while (true)
+	while (true)
 	{
-		if (true)
-		{
-			return 1;
-		}
-	}*/
+		char buffer[8] = { 0, };
+		recv(mySocket, buffer, 8, 0);
+		float fbuffer[2] = { 0, };
+		memcpy(fbuffer, buffer, 8);
+		position[0].store(fbuffer[0]);
+		position[1].store(fbuffer[1]);
+	}
 	return 1;
 }
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -19,7 +21,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-
+	
 	WSADATA wsaData;
 	SOCKET hSocket;
 	SOCKADDR_IN servAddr;
@@ -28,8 +30,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	int idx = 0;
 	int readLen = 0;
 
-	const char* fortNum = "17777";
-	const char* ip = "192.168.75.149";
+	const char* fortNum = "24642";
+	const char* ip = "211.192.102.158";
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
@@ -45,15 +47,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	memset(&servAddr, 0, sizeof(servAddr));
 	servAddr.sin_family = AF_INET;
 	servAddr.sin_addr.s_addr = inet_addr(ip);
-	servAddr.sin_port = htons(atoi(fortNum));
+	int portNumtemp = atoi(fortNum);
+	servAddr.sin_port = htons(portNumtemp);
 
 	if (connect(hSocket, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR)
 	{
 		assert(false);
 	}
-
-	std::thread t1(listenFunction);
-
+	const char* data;
+	std::thread t1(listenFunction, hSocket);
+	
 	
 	HRESULT hr = CoInitialize(NULL);
 	if (FAILED(hr))
@@ -63,7 +66,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	Engine engine;
-	if (engine.Initialize(hInstance, "Title", "MyWindowClass", 800, 600))
+	if (engine.Initialize(&hSocket, hInstance, "Title", "MyWindowClass", 800, 600))
 	{
 		while (engine.ProcessMessages() == true)
 		{

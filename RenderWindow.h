@@ -1,6 +1,5 @@
 #pragma once
 #include "ErrorLogger.h"
-#include "windows.h"
 class WindowContainer;
 
 class RenderWindow
