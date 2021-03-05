@@ -2,8 +2,8 @@
 #include "WindowContainer.h"
 
 #include <thread>
-
-
+#include <stdio.h>
+#include <assert.h>
 
 class Engine : WindowContainer
 {
