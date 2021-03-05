@@ -1,3 +1,4 @@
+#pragma once
 #include "Engine.h"
 
 bool Engine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
@@ -7,7 +8,7 @@ bool Engine::Initialize(HINSTANCE hInstance, std::string window_title, std::stri
 
 	if (!gfx.Initialize(this->render_window.GetHWND(), width, height))
 		return false;
-	
+
 	return true;
 }
 
