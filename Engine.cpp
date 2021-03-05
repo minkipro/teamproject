@@ -34,7 +34,7 @@ bool Engine::ProcessMessages()
 	return this->render_window.ProcessMessages();
 }
 
-void Engine::Update()
+void Engine::Update(float x, float y)
 {
 	while (!keyboard.CharBufferIsEmpty())
 	{
@@ -51,22 +51,27 @@ void Engine::Update()
 	{
 		MouseEvent me = mouse.ReadEvent();
 	}
-
+	gfx.objectPosition[0] = x;
+	gfx.objectPosition[1] = y;
 	if (keyboard.KeyIsPressed('W'))
 	{
-		this->gfx.objectPosition[1] += 0.01f;
+		//send data
+		//this->gfx.objectPosition[1] += 0.01f;
 	}
 	if (keyboard.KeyIsPressed('A'))
 	{
-		this->gfx.objectPosition[0] -= 0.01f;
+		//send data
+		//this->gfx.objectPosition[0] -= 0.01f;
 	}
 	if (keyboard.KeyIsPressed('S'))
 	{
-		this->gfx.objectPosition[1] -= 0.01f;
+		//send data
+		//this->gfx.objectPosition[1] -= 0.01f;
 	}
 	if (keyboard.KeyIsPressed('D'))
 	{
-		this->gfx.objectPosition[0] += 0.01f;
+		//send data
+		//this->gfx.objectPosition[0] += 0.01f;
 	}
 }
 
